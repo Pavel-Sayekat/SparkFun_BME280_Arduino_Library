@@ -203,8 +203,10 @@ class BME280
 	//Software reset routine
 	void reset( void );
 	
-    //Returns the values as floats.
-    float readFloatPressure( void );
+  //Returns the values as floats.
+  float readFloatPressure( void );
+  float readPressureAtm( void );
+  float readPressureInhg( void );
 	float readFloatAltitudeMeters( void );
 	float readFloatAltitudeFeet( void );
 	
@@ -218,7 +220,7 @@ class BME280
 	//From Pavel-Sayekat: https://github.com/sparkfun/SparkFun_BME280_Breakout_Board/pull/6/files
     double dewPointC(void);
     double dewPointF(void);
-	
+    double dewPointFast(void);
     //The following utilities read and write
 
 	//ReadRegisterRegion takes a uint8 array address as input and reads

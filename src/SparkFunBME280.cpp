@@ -414,6 +414,24 @@ float BME280::getReferencePressure()
 	return(_referencePressure);
 }
 
+// Returns pressure in inch of Mercury
+float BME280::readPressureInhg( void )
+{
+	float p_ingh = readFloatPressure();
+	p_ingh = p_ingh * 0.00029530;
+
+	return p_ingh;
+}
+
+// Returns pressure in Atmospheric pressure unit atm
+float BME280::readPressureAtm( void )
+{
+  float p_atm = readFloatPressure();
+  p_atm = p_atm * 0.000009869232699999999;
+
+  return p_atm;
+}
+
 float BME280::readFloatAltitudeMeters( void )
 {
 	float heightOutput = 0;
@@ -490,10 +508,7 @@ float BME280::readTempC( void )
 
 float BME280::readTempF( void )
 {
-	float output = readTempC();
-	output = (output * 9) / 5 + 32;
-
-	return output;
+	return (readTempC() * 1.8 + 32);
 }
 
 //****************************************************************************//
@@ -523,7 +538,21 @@ double BME280::dewPointC(void)
 // Returns Dew point in DegF
 double BME280::dewPointF(void)
 {
-	return(dewPointC() * 1.8 + 32); //Convert C to F
+  return (dewPointC() * 1.8 + 32); //Convert C to F
+}
+
+// delta max = 0.6544 wrt dewPoint()
+// 6.9 x faster than dewPoint()
+// reference: http://en.wikipedia.org/wiki/Dew_point
+double BME280::dewPointFast(void)
+{
+  double fehrenheit = readTempF(); 
+  double humidity = readFloatHumidity();
+  double a = 17.271;
+  double b = 237.7;
+  double temp = (a * fehrenheit) / (b + fehrenheit) + log(humidity*0.01);
+  double Td = (b * temp) / (a - temp);
+  return Td;
 }
 
 //****************************************************************************//
