@@ -417,19 +417,13 @@ float BME280::getReferencePressure()
 // Returns pressure in inch of Mercury
 float BME280::readPressureInhg( void )
 {
-	float p_ingh = readFloatPressure();
-	p_ingh = p_ingh * 0.00029530;
-
-	return p_ingh;
+	return (readFloatPressure() * 0.00029530);
 }
 
 // Returns pressure in Atmospheric pressure unit atm
 float BME280::readPressureAtm( void )
 {
-  float p_atm = readFloatPressure();
-  p_atm = p_atm * 0.000009869232699999999;
-
-  return p_atm;
+  return (readFloatPressure() * 0.000009869232699999999);
 }
 
 float BME280::readFloatAltitudeMeters( void )
@@ -437,17 +431,12 @@ float BME280::readFloatAltitudeMeters( void )
 	float heightOutput = 0;
 	
 	heightOutput = ((float)-45846.2)*(pow(((float)readFloatPressure()/(float)_referencePressure), 0.190263) - (float)1);
-	return heightOutput;
-	
+	return heightOutput;	
 }
 
 float BME280::readFloatAltitudeFeet( void )
 {
-	float heightOutput = 0;
-	
-	heightOutput = readFloatAltitudeMeters() * 3.28084;
-	return heightOutput;
-	
+	return (readFloatAltitudeMeters() * 3.28084);	
 }
 
 //****************************************************************************//
